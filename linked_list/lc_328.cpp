@@ -1,28 +1,50 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
 class Solution {
 public:
-    vector<vector<int>> shiftGrid(vector<vector<int>>& grid, int k) {
+    ListNode* oddEvenList(ListNode* head) {
+        if(!head)
+        return NULL;
         
-        int m=grid.size();
-        int n=grid[0].size();
+        ListNode* odd=head;
+        ListNode* even=head->next;
 
 
-        for(int p=0;p<k;p++){
-            vector<vector<int>> ans(m,vector<int>(n,0));
+        ListNode* anotherE=NULL;
 
-            ans[0][0]=grid[m-1][n-1];
+        ListNode* newodd=odd;
+        ListNode* neweven=NULL;
 
-            for(int i=0;i<m-1;i++){
-                ans[i+1][0]=grid[i][n-1];
+    
+
+
+        while(newodd->next){
+            if(anotherE!=NULL){
+                anotherE->next=newodd->next;
             }
 
-            for(int i=0;i<m;i++){
-                for(int j=0;j<n-1;j++){
-                    ans[i][j+1]=grid[i][j];
-                }
+            neweven=newodd->next;
+            anotherE=neweven;
+            if(neweven->next){
+                newodd->next=neweven->next;
+            }else{
+                break;
             }
-            grid=ans;
+
+            newodd=neweven->next;
         }
-        return grid;
+        if(anotherE)
+        anotherE->next=NULL;
+        newodd->next=even;
 
+        return head;
     }
 };
